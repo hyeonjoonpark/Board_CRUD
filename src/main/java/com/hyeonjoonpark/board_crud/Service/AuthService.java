@@ -1,10 +1,11 @@
 package com.hyeonjoonpark.board_crud.Service;
 
+import com.hyeonjoonpark.board_crud.Dto.LoginResponseDto;
 import com.hyeonjoonpark.board_crud.Dto.ResponseDto;
+import com.hyeonjoonpark.board_crud.Dto.LoginDto;
 import com.hyeonjoonpark.board_crud.Dto.SignupDto;
 import com.hyeonjoonpark.board_crud.Entity.UserEntity;
 import com.hyeonjoonpark.board_crud.Repository.UserRepository;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,5 +40,26 @@ public class AuthService {
         }
 
         return ResponseDto.setSuccess("SignUp Success!", null);
+    }
+
+    public ResponseDto<LoginResponseDto> login(LoginDto dto) {
+        String userEmail = dto.getUserEmail();
+        String userPassword = dto.getUserPassword();
+        boolean existed =  userRepository.existsByUserEmailAndUserPassword(userEmail, userPassword);
+
+        if(!existed) {
+            return ResponseDto.setFailed("Login Info is Wrong");
+        }
+
+        // 값이 존재하면
+        UserEntity userEntity = userRepository.findById(userEmail).get(); // 사용자 이메일을 가져옴
+
+        userEntity.setUserPassword("");
+
+        String token = "";
+        int exprTime = 3600000; // 한 시간
+
+        LoginResponseDto loginResponseDto = new LoginResponseDto(token, exprTime, userEntity);
+        return ResponseDto.setSuccess("Login Success", loginResponseDto);
     }
 }

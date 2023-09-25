@@ -1,5 +1,6 @@
 package com.hyeonjoonpark.board_crud.Entity;
 
+import com.hyeonjoonpark.board_crud.Dto.LoginDto;
 import com.hyeonjoonpark.board_crud.Dto.SignupDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
