@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/")
 public class MainController {
     @GetMapping("")
-    @CrossOrigin(originPatterns = "http://localhost:3000")
     public String hello() {
         return "Connection Success";
     }
